@@ -1,0 +1,228 @@
+line 1026
+
+/************************************************************************
+Function:		firing
+Description:	Draw bomb to the ground
+*************************************************************************/
+void firing() {
+	float randomX, randomY, randomZ, directionX = 1.0, directionZ = 1.0, directionY = 1.0;
+
+	glMaterialfv(GL_FRONT, GL_AMBIENT, goldAmbient);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, goldDiffuse);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+	glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+
+	GLUquadric *bomb;
+	bomb = gluNewQuadric();
+
+	glBindTexture(GL_TEXTURE_2D, texture1);
+
+	glPushMatrix();
+	glShadeModel(GL_SMOOTH);
+	gluQuadricNormals(bomb, GLU_SMOOTH);
+	gluQuadricTexture(bomb, GL_TRUE);
+
+	glTranslatef(XPosition, YPosition + 2.5 - firePower, ZPosition);
+	gluCylinder(bomb, 0.1, 0.1, 0.5, 10, 2);
+	glPopMatrix();
+
+	hitGround = YPosition + 2.5 - firePower;
+
+	/* Check if bomb hit the ground */
+	if (hitGround < 0.1) {
+		firePower = 0.0;
+		hitGround = 0.0;
+		bombEnable = 0;
+
+		for (int i = 0; i < 100; i = i + 1) {
+			randomX = 0.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 1.5));
+			randomY = 0.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 1.5));
+			randomZ = 0.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 1.5));
+
+			if (i % 2 == 0) {
+				directionX = -1.0;
+				directionZ = 1.0;
+				directionY = 1.0;
+			}
+			else if (i % 3 == 0) {
+				directionX = 1.0;
+				directionZ = 1.0;
+				directionY = -1.0;
+			}
+			else if (i % 4 == 0) {
+				directionX = -1.0;
+				directionZ = -1.0;
+				directionY = 1.0;
+			}
+			else if (i % 5 == 0) {
+				directionX = 1.0;
+				directionZ = -1.0;
+				directionY = -1.0;
+			}
+			else {
+				directionX = 1.0;
+				directionZ = 1.0;
+				directionY = 1.0;
+			}
+			glPushMatrix();
+			glPointSize(4.0f);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteAmbient);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpecular);
+			glMaterialf(GL_FRONT, GL_SHININESS, highShininess);
+			glBegin(GL_POINTS);
+			glVertex3f(XPosition * randomX * directionX, randomY * directionY, ZPosition * randomZ * directionZ);
+			glEnd();
+			glPopMatrix();
+		}
+	}
+}
+
+line 1080 
+
+	/* Enable bombing effect */
+	if (fireEnable == 1) {
+		bombEnable = 1;
+		firing();
+		fireEnable = 0;
+		firePressCount = 0;
+	}
+	else {
+		if (bombEnable == 1)
+			firing();
+	}
+
+line 958
+
+/************************************************************************
+Function:		rainbow
+Description:	simulate rainbow effect
+*************************************************************************/
+void rainbow(GLfloat start) {
+	for (float j = start; j <= (start + 1.0); j = j + 0.1) {
+		glPushMatrix();
+		if (start == 15) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, redAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, redDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 16) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, orangeAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, orangeDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 17) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, yellowAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, yellowDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 18) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, greenAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, greenDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 19) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, blueAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, blueDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 20) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, purpleAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, purpleDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		if (start == 21) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightPurpleAmbient);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightPurpleDiffuse);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+			glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+		}
+		glLineWidth(1.0f);
+		glBegin(GL_LINE_LOOP);
+		for (GLdouble i = -90; i <= 90; i++) {
+			GLfloat degInRad = i * DEG_TO_RAD;
+			glNormal3f(-1.0, 0.0, 0.0);
+			glVertex3f(80.0, cos(degInRad) * j - 0.1, (sin(degInRad) * j) * 1.8);
+		}
+		glEnd();
+
+		/* Do this to disable rainbow effect on mountain */
+		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmbient);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteSpecular);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, zeroMaterial);
+		glMaterialf(GL_FRONT, GL_SHININESS, noShininess);
+
+		glPopMatrix();
+	}
+}
+
+line 1031
+
+	/* Enable rainbow effect */
+	if (rainbowEnable == 1 && frame_solid_switch == 0) {
+		rainbow(15.0);
+		rainbow(16.0);
+		rainbow(17.0);
+		rainbow(18.0);
+		rainbow(19.0);
+		rainbow(20.0);
+		rainbow(21.0);
+	}
+
+line 158
+
+/************************************************************************
+Function:		drawSnow
+Description:	Generate random positions for each snowflower.
+*************************************************************************/
+void drawSnow(void) {
+	float snowX, snowY, snowZ;
+	for (int i = 0; i < 3000; i++) {
+		snowX = -100.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 200.0));
+		snowY = 1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 99.0));
+		snowZ = -100.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 200.0));
+		sX[i] = snowX;
+		sY[i] = snowY;
+		sZ[i] = snowZ;
+	}
+}
+
+line 1408
+
+	/* Generate snow */
+	drawSnow();
+
+line 423
+
+	/* Trigger wind */
+	if (key == 'd') {
+		windPressCount += 1;
+		if (windPressCount % 2 != 0)
+			windEnable = 1;
+		else
+			windEnable = 0;
+	}
+
+	/* Trigger rainbow */
+	if (key == 'r') {
+		rainbowPressCount += 1;
+		if (rainbowPressCount % 2 != 0)
+			rainbowEnable = 1;
+		else
+			rainbowEnable = 0;
+	}
+
+	/* Trigger firing */
+	if (key == 'g' && bombEnable == 0) {
+		firePressCount += 1;
+		if (firePressCount % 2 != 0)
+			fireEnable = 1;
+		else
+			fireEnable = 0;
+	}
